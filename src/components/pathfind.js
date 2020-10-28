@@ -4,8 +4,8 @@ import "./pathfind.css"
 
 //DECLARING ROWS AND COLLUMNS FOR GRID
 
-const rows = 15;
-const cols = 10;
+const rows = 10;
+const cols = 15;
 
 
 
@@ -22,11 +22,11 @@ useEffect( () => {
 
 //FUNCTION TO CREATE GRID
 const initializeGrid = () => {
-    const grid = new Array(rows);
+    const grid = new Array(cols);
 
-    for (let i = 0; i < rows; i++){
+    for (let i = 0; i < cols; i++){
 
-        grid[i] = new Array(cols)
+        grid[i] = new Array(rows)
     }
         
     createSpot(grid);
@@ -38,9 +38,9 @@ const initializeGrid = () => {
 
 const createSpot = (grid) => {
 
-    for( let i = 0; i < rows; i++){
+    for( let i = 0; i < cols; i++){
 
-        for(let j = 0; j < cols; j++){
+        for(let j = 0; j < rows; j++){
 
             grid[i][j] = new Spot(i, j);
         }
