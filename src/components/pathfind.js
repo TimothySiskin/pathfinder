@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Node from './node'
+import Astar from '../aStarAlgorithm/aStar'
 import "./pathfind.css"
 
 //DECLARING ROWS AND COLLUMNS FOR GRID
@@ -36,6 +37,13 @@ const initializeGrid = () => {
     createSpot(grid);
     
     setGrid(grid);
+
+     addNeighbors(grid);
+
+    const startNode = grid[NODE_START_COL][NODE_START_ROW];
+    const endNode = grid[NODE_END_COL][NODE_END_ROW];
+
+    Astar(startNode, endNode);
 }
 
 //CREATE THE SPOT
@@ -51,6 +59,22 @@ const createSpot = (grid) => {
     }
 }
 
+
+//Add neighbors
+
+
+const addNeighbors = (grid) => {
+
+    for(let i = 0; i < cols; i++){
+        for(let j = 0; j < rows; j++){
+            grid[i][j].addneighbors(grid);
+        }
+    }
+}
+
+
+
+
 //SPOT CONSTRUCTOR
 
 function Spot(i, j){
@@ -61,6 +85,16 @@ function Spot(i, j){
     this.g = 0;
     this.f = 0;
     this.h = 0;
+    this.neighbors = [];
+    this.previous = undefined;
+    this.addneighbors = function (grid) {
+        let i = this.x;
+        let j = this.y;
+        if( i > 0) this.neighbors.push(grid[i-1][j]);
+        if(i < cols - 1) this.neighbors.push(grid[i+1][j]);
+        if(j > 0) this.neighbors.push(grid[i][j-1]);
+        if(j < rows - 1) this.neighbors.push(grid[i][j+1]);
+    };
 }
 
 
@@ -74,7 +108,6 @@ const gridWithNode = (
                 <div key={colsIndex}>
                     {cols.map((rows, rowsIndex) => {
                             const{isStart, isEnd} = rows;
-                            console.log(rows);
                             return(
                                 <Node key = {rowsIndex} isStart={isStart} isEnd={isEnd} row={rowsIndex} col={colsIndex} />
                             )
@@ -91,7 +124,6 @@ const gridWithNode = (
     </div>
 ) 
 
-console.log(Grid)
 
 //RENDERING PATHFIND COMPONENT
 
