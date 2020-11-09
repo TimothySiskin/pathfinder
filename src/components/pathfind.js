@@ -19,6 +19,7 @@ const NODE_END_COL = cols - 1;
 const Pathfind = () =>{
 
 const [Grid, setGrid] = useState([]);
+const [Path, setPath] = useState([]);
 
 
 useEffect( () => {
@@ -43,7 +44,8 @@ const initializeGrid = () => {
     const startNode = grid[NODE_START_COL][NODE_START_ROW];
     const endNode = grid[NODE_END_COL][NODE_END_ROW];
 
-    Astar(startNode, endNode);
+    let path =Astar(startNode, endNode);
+    setPath(path);
 }
 
 //CREATE THE SPOT
@@ -126,7 +128,7 @@ const gridWithNode = (
 
 
 //RENDERING PATHFIND COMPONENT
-
+console.log(Path);
     return (
 
         <div>

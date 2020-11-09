@@ -21,7 +21,20 @@ function Astar(startNode, endNode){
 
         if(current === endNode){
 
-            console.log(`Path is found!`)
+            let temp = current;
+            path.push(temp);
+
+            while(temp.previous)
+            {
+
+                path.push(temp.previous);
+                temp = temp.previous;
+            }
+
+           // console.log(path);
+           // console.log(`Path is found!`);
+            return path;
+            
         }
 
         openSet = openSet.filter(element => element !== current);
