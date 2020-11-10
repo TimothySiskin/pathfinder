@@ -3,6 +3,7 @@ function Astar(startNode, endNode){
     let openSet = [];
     let closeSet = [];
     let path = [];
+    let visitedNodes = [];
 
     openSet.push(startNode);
 
@@ -19,6 +20,7 @@ function Astar(startNode, endNode){
 
         let current = openSet[leastIndex];
 
+        visitedNodes.push(current);
         if(current === endNode){
 
             let temp = current;
@@ -31,9 +33,8 @@ function Astar(startNode, endNode){
                 temp = temp.previous;
             }
 
-           // console.log(path);
-           // console.log(`Path is found!`);
-            return path;
+           
+            return { path, visitedNodes };
             
         }
 
@@ -81,6 +82,7 @@ function Astar(startNode, endNode){
         }
     }
 
+    return {path, visitedNodes, error: "No path found!"}
 }
 
 

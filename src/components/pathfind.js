@@ -5,8 +5,8 @@ import "./pathfind.css"
 
 //DECLARING ROWS AND COLLUMNS FOR GRID
 
-const rows = 10;
-const cols = 15;
+const rows = 15;
+const cols = 20;
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
@@ -20,6 +20,7 @@ const Pathfind = () =>{
 
 const [Grid, setGrid] = useState([]);
 const [Path, setPath] = useState([]);
+const [VisitedNodes, setVisitedNodes] = useState([]);
 
 
 useEffect( () => {
@@ -45,7 +46,8 @@ const initializeGrid = () => {
     const endNode = grid[NODE_END_COL][NODE_END_ROW];
 
     let path =Astar(startNode, endNode);
-    setPath(path);
+    setPath(path.path);
+    setVisitedNodes(path.visitedNodes);
 }
 
 //CREATE THE SPOT
@@ -126,12 +128,46 @@ const gridWithNode = (
     </div>
 ) 
 
+const visualizeShortesPath = (shotestPathNodes) =>{
+    for(let i = 0; i < shotestPathNodes.length; i++){
+        setTimeout(() => {
+            const node = shotestPathNodes[i]
+            document.getElementById(`node-${node.x}-${node.y}`).className = 
+            "node node-shortest-path";
+
+        }, 10*i)
+    }
+}
+
+const visualizePath = () => {
+
+
+    for(let i = 0; i <= VisitedNodes.length; i++){
+        
+        if(i === VisitedNodes.length){
+            setTimeout(() => {
+            visualizeShortesPath(Path)
+            }, 20*i)  
+        }
+        else{
+
+            setTimeout(() => {
+            const node = VisitedNodes[i]
+            document.getElementById(`node-${node.x}-${node.y}`).className = 
+            "node node-visited";
+            }, 20 * i)
+            
+        }
+    }
+}
+
 
 //RENDERING PATHFIND COMPONENT
-console.log(Path);
+
     return (
 
         <div>
+            <button onClick={visualizePath}>Visualize Path</button>
             <h1>PathFind Component!</h1>
             {gridWithNode}
         </div>
