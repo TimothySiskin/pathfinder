@@ -17,6 +17,12 @@
 }
 
 
+.isWall{
+
+  background-color: gray;
+
+}
+
 /* Animation for nodes */
 
 .node-visited {

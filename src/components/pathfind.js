@@ -6,7 +6,7 @@ import "./pathfind.css"
 //DECLARING ROWS AND COLLUMNS FOR GRID
 
 const rows = 15;
-const cols = 20;
+const cols = 40;
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
@@ -46,6 +46,10 @@ const initializeGrid = () => {
     const endNode = grid[NODE_END_COL][NODE_END_ROW];
 
     let path =Astar(startNode, endNode);
+
+    startNode.isWall = false;
+    endNode.isWall = false;
+
     setPath(path.path);
     setVisitedNodes(path.visitedNodes);
 }
@@ -90,6 +94,10 @@ function Spot(i, j){
     this.f = 0;
     this.h = 0;
     this.neighbors = [];
+    this.isWall = false;
+    if(Math.random(1) < 0.2){
+        this.isWall = true;
+    }
     this.previous = undefined;
     this.addneighbors = function (grid) {
         let i = this.x;
@@ -111,9 +119,15 @@ const gridWithNode = (
             return (
                 <div key={colsIndex}>
                     {cols.map((rows, rowsIndex) => {
-                            const{isStart, isEnd} = rows;
+                            const{isStart, isEnd, isWall} = rows;
                             return(
-                                <Node key = {rowsIndex} isStart={isStart} isEnd={isEnd} row={rowsIndex} col={colsIndex} />
+                                <Node 
+                                key = {rowsIndex}
+                                isStart={isStart}
+                                isEnd={isEnd}
+                                row={rowsIndex}
+                                col={colsIndex}
+                                isWall = {isWall} />
                             )
                         }
                     )

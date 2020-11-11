@@ -49,7 +49,7 @@ function Astar(startNode, endNode){
 
             let neighbor = neighbors[i];
  
-            if(!closeSet.includes(neighbor)){
+            if(!closeSet.includes(neighbor) && !neighbor.isWall){
 
 
                 let tempG = current.g + 1;
