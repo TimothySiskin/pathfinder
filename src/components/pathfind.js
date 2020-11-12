@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import Node from './node'
 import Astar from '../aStarAlgorithm/aStar'
+import primsMaze from '../primsMazeAlgorithm/primsMaze'
 import "./pathfind.css"
 
 //DECLARING ROWS AND COLLUMNS FOR GRID
 
-const rows = 15;
-const cols = 40;
+const rows = 5;
+const cols = 5;
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
@@ -16,11 +17,12 @@ const NODE_END_COL = cols - 1;
 
 
 
-const Pathfind = () =>{
+const Pathfind = () => {
 
 const [Grid, setGrid] = useState([]);
 const [Path, setPath] = useState([]);
 const [VisitedNodes, setVisitedNodes] = useState([]);
+const [Maze, setMaze] = useState([]);
 
 
 useEffect( () => {
@@ -45,13 +47,16 @@ const initializeGrid = () => {
     const startNode = grid[NODE_START_COL][NODE_START_ROW];
     const endNode = grid[NODE_END_COL][NODE_END_ROW];
 
-    let path =Astar(startNode, endNode);
+    let path = Astar(startNode, endNode);
+    primsMaze(grid, startNode, endNode);
 
     startNode.isWall = false;
     endNode.isWall = false;
 
     setPath(path.path);
     setVisitedNodes(path.visitedNodes);
+
+
 }
 
 //CREATE THE SPOT
@@ -95,9 +100,12 @@ function Spot(i, j){
     this.h = 0;
     this.neighbors = [];
     this.isWall = false;
-    if(Math.random(1) < 0.2){
-        this.isWall = true;
-    }
+    this.weight = 0;
+
+    // if(Math.random(1) < 0.2){
+    //     this.isWall = true;
+    // }
+
     this.previous = undefined;
     this.addneighbors = function (grid) {
         let i = this.x;
@@ -119,7 +127,7 @@ const gridWithNode = (
             return (
                 <div key={colsIndex}>
                     {cols.map((rows, rowsIndex) => {
-                            const{isStart, isEnd, isWall} = rows;
+                            const{isStart, isEnd, isWall, weight} = rows;
                             return(
                                 <Node 
                                 key = {rowsIndex}
@@ -127,7 +135,8 @@ const gridWithNode = (
                                 isEnd={isEnd}
                                 row={rowsIndex}
                                 col={colsIndex}
-                                isWall = {isWall} />
+                                isWall = {isWall}
+                                weight = {weight} />
                             )
                         }
                     )
@@ -176,12 +185,14 @@ const visualizePath = () => {
 }
 
 
+
 //RENDERING PATHFIND COMPONENT
 
     return (
 
         <div>
             <button onClick={visualizePath}>Visualize Path</button>
+            {/* <button onClick={createMaze}>Create Maze</button> */}
             <h1>PathFind Component!</h1>
             {gridWithNode}
         </div>
