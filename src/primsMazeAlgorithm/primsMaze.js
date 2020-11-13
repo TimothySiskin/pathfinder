@@ -4,7 +4,7 @@ let current = startNode;
 let end = endNode;
 let maze = [];
 let walls = [];
-
+let lowestWeight = 200;
 
 
 //First step of algorithm: all cells must be walls
@@ -26,11 +26,7 @@ let walls = [];
 current.isWall = false;
 end.isWall = false;
 
-for(let value of current.neighbors){
 
-    walls.push(value)
-
-}
 
 primsAlgorithm(current);
 
@@ -41,22 +37,53 @@ function primsAlgorithm (current) {
 
     maze.push(current);
 
+    for(let value of current.neighbors){
+
+        walls.push(value)
+    
+    }
+
+    
     
     
     //third step: 
     
-    if(walls.length > 0){
+    while(walls.length > 0){
     
         let randomCell = Math.floor(Math.random() * (walls.length))
         let randomWall = walls[randomCell];
 
 
-if (!(current.isWall && randomWall.isWall)){
+        for(let cell of walls){
+            cell.weight < lowestWeight ? lowestWeight = cell.weight : null;
+        }
 
-    randomWall.isWall = false;
+        for(let cell of walls){
+
+            //Cheking if only one cell neighbor is a path
+
+            let neighborPath = 0;
+
+            for(let value of cell.neighbors){
+                value.isWall == false ? neighborPath++ : null
+            }
+
+           if(cell.weight === lowestWeight && neighborPath === 1){
+
+           cell.isWall = false;
+           for (let values of cell.neighbors){
+               walls.push(values)
+           }
+        }
+
+        }
+
+// if (!(current.isWall && randomWall.isWall)){
+
+//     randomWall.isWall = false;
 
 
-}
+// }
 
 
 
