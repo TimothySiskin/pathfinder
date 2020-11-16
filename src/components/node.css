@@ -23,6 +23,12 @@
 
 }
 
+button{
+
+  background: lightgray;
+  
+}
+
 /* Animation for nodes */
 
 .node-visited {
