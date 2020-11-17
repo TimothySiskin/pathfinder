@@ -1,9 +1,12 @@
 function primsMaze(grid, startNode, endNode){
 
 let current = startNode;
+
 let end = endNode;
 let maze = [];
 let walls = [];
+
+//Random, hight number
 let lowestWeight = 200;
 
 
@@ -55,7 +58,11 @@ function primsAlgorithm (current) {
 
 
         for(let cell of walls){
-            cell.weight < lowestWeight ? lowestWeight = cell.weight : null;
+            if(cell.weight < lowestWeight){
+
+                lowestWeight = cell.weight 
+
+            }
         }
 
         for(let cell of walls){
@@ -65,8 +72,13 @@ function primsAlgorithm (current) {
             let neighborPath = 0;
 
             for(let value of cell.neighbors){
-                value.isWall == false ? neighborPath++ : null
+                if(value.isWall === false ){
+                    neighborPath++ 
+                }
+                
             }
+
+            //checking if cell weight is lowest from neighbours and it has only one neighbor that is path element
 
            if(cell.weight === lowestWeight && neighborPath === 1){
 
@@ -74,9 +86,18 @@ function primsAlgorithm (current) {
            for (let values of cell.neighbors){
                walls.push(values)
            }
-        }
+
+           //i must pop cell from walls[]
+
+           walls.pop(walls.indexOf(cell), 1)
 
         }
+
+
+
+        }
+
+    }
 
 // if (!(current.isWall && randomWall.isWall)){
 
@@ -119,13 +140,18 @@ function primsAlgorithm (current) {
     
     // }
 
+
+
+
+
+}
+
 }
 
 
 
-}
+//*********************************************************************** */
 
-}
 
 
 export default primsMaze
