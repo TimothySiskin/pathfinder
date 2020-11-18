@@ -6,6 +6,8 @@ let end = endNode;
 let maze = [];
 let walls = [];
 
+let save = 0;
+
 //Random, hight number
 let lowestWeight = 200;
 
@@ -43,70 +45,86 @@ function primsAlgorithm (current) {
     for(let value of current.neighbors){
 
         walls.push(value)
-        console.log(`jestem w petli przypisujacej sąsiadów do wall[]: i w tym momencie wygląda to tak: ${walls}`);
-    
+        
     }
-
+        console.log(`jestem w petli przypisujacej sąsiadów do wall[]: i w tym momencie wygląda to tak:`);
+        console.log(walls);
     
     
     
     //third step: 
     
-    while(walls.length > 0){
+    if(walls.length > 0){
     
         let randomCell = Math.floor(Math.random() * (walls.length))
         let randomWall = walls[randomCell];
 
         console.log(`jestem w głównej pętli while)`)
+        console.log(walls.length)
 
         for(let cell of walls){
             if(cell.weight < lowestWeight){
 
                 lowestWeight = cell.weight 
-                console.log(`jestem w pętli sprawdzającej najmniejszą wartość sąsiadów, nie wiem, czy to działa poprawnie. ${lowestWeight}`)
+                
             }
         }
+        console.log(`jestem w pętli sprawdzającej najmniejszą wartość sąsiadów, nie wiem, czy to działa poprawnie. Najmnijesza wartość to: ${lowestWeight}`)
+
 
         for(let cell of walls){
 
-            //Cheking if only one cell neighbor is a path
+                //Cheking if only one cell neighbor is a path
 
-            let neighborPath = 0;
+                let neighborPath = 0;
 
-            for(let value of cell.neighbors){
-                if(value.isWall === false ){
-                    neighborPath++
+                for(let value of cell.neighbors){
+                    if(value.isWall === false ){
+                        neighborPath++
+                        
+                        
+                    }
                     
-                    console.log(`jestem w pętli sprawdzającej ilu sąsiadów jest elementem ścieżki labiryntu: na ten moment wynosi ona: ${neighborPath}`)
                 }
-                
+
+                console.log(`jestem w pętli sprawdzającej ilu sąsiadów jest elementem ścieżki labiryntu: na ten moment wynosi ona: ${neighborPath}`)
+
+                //checking if cell weight is lowest from neighbours and it has only one neighbor that is path element
+
+            if(cell.weight === lowestWeight && neighborPath === 1){
+
+
+                console.log(`jestem w pętli która sprawdza czy waga ściany jest najmniejsza i czy ma ona dokładnie jednego sasiada bedącego ścieżką`)
+                cell.isWall = false;
+
+                for (let values of cell.neighbors){
+                    walls.push(values)
+                    
+                }
+                console.log(`jestem w pętli na końcu algorytmu, która dodaje sąsiadów do wall wygląda to teraz tak:`)
+                console.log(walls)
+                //i must pop cell from walls[]
+
+                walls.pop(walls.indexOf(cell), 1)
+
+                console.log(`przeprowadziłem cały algorytm z pętli while i usunołem element, który stał się częścią ścieżki. walls wygląda teraz tak:`)
+                console.log(walls)
+
             }
 
-            //checking if cell weight is lowest from neighbours and it has only one neighbor that is path element
-
-           if(cell.weight === lowestWeight && neighborPath === 1){
-
-
-            console.log(`jestem w pętli która sprawdza czy waga ściany jest najmniejsza i czy ma ona dokładnie jednego sasiada bedącego ścieżką`)
-           cell.isWall = false;
-
-           for (let values of cell.neighbors){
-               walls.push(values)
-
-               console.log(`jestem w pętli na końcu algorytmu, która dodaje sąsiadów do wall wygląda to teraz tak: ${walls}`)
-           }
-
-           //i must pop cell from walls[]
-
-           walls.pop(walls.indexOf(cell), 1)
-
-           console.log(`przeprowadziłem cały algorytm z pętli while i usunołem element, który stał się częścią ścieżki. walls wygląda teraz tak: ${walls}`)
 
         }
 
+        save++;
 
-
+        if(save === 3 ){
+            console.log("przekroczono limit")
+            return;
         }
+
+        current = randomWall;
+
+        primsAlgorithm(current);
 
     }
 
