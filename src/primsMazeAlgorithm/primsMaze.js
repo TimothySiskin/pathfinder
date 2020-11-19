@@ -30,6 +30,7 @@ let save = 0;
 current.isWall = false;
 end.isWall = false;
 maze.push(current);
+//console.log(maze)
 
 
 
@@ -39,31 +40,43 @@ primsAlgorithm(current);
 //***************************************************************************************************** */
 
 function primsAlgorithm (current) {
-
-    //Random, hight number
-    let lowestWeight = 200;
     
-
+    
+    //console.log(`to jest current`)
+    //console.log(current)
 
     for(let value of current.neighbors){
 
         walls.push(value)
         
+       // //console.log(value);
+       
     }
-        console.log(`jestem w petli przypisujacej sąsiadów do wall[]: i w tym momencie wygląda to tak:`);
-        console.log(walls);
+    //console.log(`jestem w petli przypisujacej sąsiadów do wall[]: i w tym momencie wygląda to tak:`);
+    //console.log(walls);
     
     
     
     //third step: 
     
     if(walls.length > 0){
+
+        //Random, hight number
+        let lowestWeight = 200;
     
         let randomCell = Math.floor(Math.random() * (walls.length))
         let randomWall = walls[randomCell];
 
-        console.log(`jestem w głównej pętli while)`)
-        console.log(walls.length)
+        //console.log(`jestem w głównej pętli while)`)
+        //console.log(walls.length)
+
+        console.log(lowestWeight);
+
+        console.log(`to jest wall po usunieciu elementow ktore sa w maze`)
+                for(let value of walls){
+
+                   console.log(value)
+                }
 
         for(let cell of walls){
             if(cell.weight < lowestWeight){
@@ -72,7 +85,8 @@ function primsAlgorithm (current) {
                 
             }
         }
-        console.log(`jestem w pętli sprawdzającej najmniejszą wartość sąsiadów, nie wiem, czy to działa poprawnie. Najmnijesza wartość to: ${lowestWeight}`)
+        console.log(`jestem w pętli sprawdzającej najmniejszą wartość sąsiadów, nie wiem, czy to działa poprawnie. Najmnijesza wartość to:`)
+        console.log(lowestWeight);
 
 
         for(let cell of walls){
@@ -80,6 +94,7 @@ function primsAlgorithm (current) {
                 //Cheking if only one cell neighbor is a path
 
                 let neighborPath = 0;
+
 
                 for(let value of cell.neighbors){
                     if(value.isWall === false ){
@@ -90,14 +105,14 @@ function primsAlgorithm (current) {
                     
                 }
 
-                console.log(`jestem w pętli sprawdzającej ilu sąsiadów jest elementem ścieżki labiryntu: na ten moment wynosi ona: ${neighborPath}`)
+                //console.log(`jestem w pętli sprawdzającej ilu sąsiadów jest elementem ścieżki labiryntu: na ten moment wynosi ona: ${neighborPath}`)
 
                 //checking if cell weight is lowest from neighbours and it has only one neighbor that is path element
 
-            if(cell.weight === lowestWeight && neighborPath === 1){
+            if(cell.weight === lowestWeight && neighborPath === 1 && cell.isWall){
 
 
-                console.log(`jestem w pętli która sprawdza czy waga ściany jest najmniejsza i czy ma ona dokładnie jednego sasiada bedącego ścieżką`)
+                //console.log(`jestem w pętli która sprawdza czy waga ściany jest najmniejsza i czy ma ona dokładnie jednego sasiada bedącego ścieżką`)
                 cell.isWall = false;
                 maze.push(cell);
 
@@ -105,21 +120,41 @@ function primsAlgorithm (current) {
                     walls.push(values)
                     
                 }
-                console.log(`jestem w pętli na końcu algorytmu, która dodaje sąsiadów do wall wygląda to teraz tak:`)
-                console.log(walls)
+                //console.log(`jestem w pętli na końcu algorytmu, która dodaje sąsiadów do wall wygląda to teraz tak:`)
+                //console.log(walls)
                 //i must pop cell from walls[]
 
-                
+               console.log(`to jest wall`)
+               
+                for(let value of walls){
+
+                    console.log(value)
+                }
+
+
+                console.log(`to jest maze`)
+
+
                 for( let value of maze){
 
-                    walls.pop(walls.indexOf(value), 1)
+
+                    //TEN DZIAŁA
+
+                    walls.splice(walls.indexOf(value), 1)
+
 
                 }
 
-                
 
-                console.log(`przeprowadziłem cały algorytm z pętli while i usunołem element, który stał się częścią ścieżki. walls wygląda teraz tak:`)
-                console.log(walls)
+               console.log(`to jest wall po usunieciu elementow ktore sa w maze`)
+                for(let value of walls){
+
+                   console.log(value)
+                }
+
+                //console.log(`przeprowadziłem cały algorytm z pętli while i usunołem element, który stał się częścią ścieżki. walls wygląda teraz tak:`)
+                //console.log(walls)
+                //console.log(maze)
 
             }
 
@@ -129,7 +164,7 @@ function primsAlgorithm (current) {
         save++;
 
         if(save === 3 ){
-            console.log("przekroczono limit")
+            //console.log("przekroczono limit")
             return;
         }
 
@@ -160,7 +195,7 @@ function primsAlgorithm (current) {
     //         // walls = walls.filter((values) => values !== randomWall)
     //         //         //  .filter((values) => {
 
-    //         //         //     console.log(values)
+    //         //         //     //console.log(values)
     //         //         //     return (values.isWall === false);
 
     //         //         //   });
@@ -174,7 +209,7 @@ function primsAlgorithm (current) {
     //     recursion++
     //     if(recursion === 25){
 
-    //         return console.log("zjebałeś")
+    //         return //console.log("zjebałeś")
     //     }
     //     primsAlgorithm(randomWall);
     
