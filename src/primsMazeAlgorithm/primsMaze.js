@@ -8,8 +8,7 @@ let walls = [];
 
 let save = 0;
 
-//Random, hight number
-let lowestWeight = 200;
+
 
 
 //First step of algorithm: all cells must be walls
@@ -30,6 +29,7 @@ let lowestWeight = 200;
 
 current.isWall = false;
 end.isWall = false;
+maze.push(current);
 
 
 
@@ -40,7 +40,10 @@ primsAlgorithm(current);
 
 function primsAlgorithm (current) {
 
-    maze.push(current);
+    //Random, hight number
+    let lowestWeight = 200;
+    
+
 
     for(let value of current.neighbors){
 
@@ -96,6 +99,7 @@ function primsAlgorithm (current) {
 
                 console.log(`jestem w pętli która sprawdza czy waga ściany jest najmniejsza i czy ma ona dokładnie jednego sasiada bedącego ścieżką`)
                 cell.isWall = false;
+                maze.push(cell);
 
                 for (let values of cell.neighbors){
                     walls.push(values)
@@ -105,7 +109,14 @@ function primsAlgorithm (current) {
                 console.log(walls)
                 //i must pop cell from walls[]
 
-                walls.pop(walls.indexOf(cell), 1)
+                
+                for( let value of maze){
+
+                    walls.pop(walls.indexOf(value), 1)
+
+                }
+
+                
 
                 console.log(`przeprowadziłem cały algorytm z pętli while i usunołem element, który stał się częścią ścieżki. walls wygląda teraz tak:`)
                 console.log(walls)
