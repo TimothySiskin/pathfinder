@@ -105,7 +105,8 @@ function primsAlgorithm (current) {
                     
                 }
 
-                //console.log(`jestem w pętli sprawdzającej ilu sąsiadów jest elementem ścieżki labiryntu: na ten moment wynosi ona: ${neighborPath}`)
+                console.log(`jestem w pętli sprawdzającej ilu sąsiadów jest elementem ścieżki labiryntu: na ten moment wynosi ona:`)
+                console.log(neighborPath);
 
                 //checking if cell weight is lowest from neighbours and it has only one neighbor that is path element
 
@@ -163,7 +164,7 @@ function primsAlgorithm (current) {
 
         save++;
 
-        if(save === 3 ){
+        if(save === 7 ){
             //console.log("przekroczono limit")
             return;
         }
@@ -173,50 +174,6 @@ function primsAlgorithm (current) {
         primsAlgorithm(current);
 
     }
-
-// if (!(current.isWall && randomWall.isWall)){
-
-//     randomWall.isWall = false;
-
-
-// }
-
-
-
-    //     if((current.isWall === false && randomWall.isWall !== false) || (current.isWall !== false && randomWall.isWall === false)){
-
-            
-    //         randomWall.isWall = false;
-    //         walls = [];
-    //         for(let value of randomWall.neighbors){
-    //             walls.push(value)
-    //         }
-    
-    //         // walls = walls.filter((values) => values !== randomWall)
-    //         //         //  .filter((values) => {
-
-    //         //         //     //console.log(values)
-    //         //         //     return (values.isWall === false);
-
-    //         //         //   });
-    //     }
-    
-        
-    
-        
-    
-        
-    //     recursion++
-    //     if(recursion === 25){
-
-    //         return //console.log("zjebałeś")
-    //     }
-    //     primsAlgorithm(randomWall);
-    
-    // }
-
-
-
 
 
 }
