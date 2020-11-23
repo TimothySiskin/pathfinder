@@ -110,6 +110,9 @@ function primsAlgorithm (current) {
 
                 //checking if cell weight is lowest from neighbours and it has only one neighbor that is path element
 
+
+                //Coś jest nie tak z tą pętlą, warunek logiczny wydaje się nie łapać wszystkiego
+
             if(cell.weight === lowestWeight && neighborPath === 1 && cell.isWall){
 
 
