@@ -115,6 +115,9 @@ function primsAlgorithm (current) {
 
             if(cell.weight === lowestWeight && neighborPath === 1 && cell.isWall){
 
+                console.log(cell.weight === lowestWeight)
+                console.log(neighborPath === 1)
+                console.log(cell.isWall)
 
                 //console.log(`jestem w pętli która sprawdza czy waga ściany jest najmniejsza i czy ma ona dokładnie jednego sasiada bedącego ścieżką`)
                 cell.isWall = false;
@@ -124,9 +127,7 @@ function primsAlgorithm (current) {
                     walls.push(values)
                     
                 }
-                //console.log(`jestem w pętli na końcu algorytmu, która dodaje sąsiadów do wall wygląda to teraz tak:`)
-                //console.log(walls)
-                //i must pop cell from walls[]
+
 
                console.log(`to jest wall`)
                
@@ -149,6 +150,11 @@ function primsAlgorithm (current) {
 
                 }
 
+                //removing duplicates from walls array
+
+                let unique = [...new Set(walls)];
+                walls = unique;
+
 
                console.log(`to jest wall po usunieciu elementow ktore sa w maze`)
                 for(let value of walls){
@@ -156,9 +162,7 @@ function primsAlgorithm (current) {
                    console.log(value)
                 }
 
-                //console.log(`przeprowadziłem cały algorytm z pętli while i usunołem element, który stał się częścią ścieżki. walls wygląda teraz tak:`)
-                //console.log(walls)
-                //console.log(maze)
+               
 
             }
 
@@ -167,7 +171,7 @@ function primsAlgorithm (current) {
 
         save++;
 
-        if(save === 7 ){
+        if(save === 3 ){
             //console.log("przekroczono limit")
             return;
         }
