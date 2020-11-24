@@ -28,9 +28,12 @@ let save = 0;
 //secend step: chose a first cell and add it to the maze, next add neighbors to the walls:
 
 current.isWall = false;
-end.isWall = false;
+end.weight = 0;
 maze.push(current);
+
 //console.log(maze)
+
+
 
 
 
@@ -41,42 +44,21 @@ primsAlgorithm(current);
 
 function primsAlgorithm (current) {
     
-    
-    //console.log(`to jest current`)
-    //console.log(current)
+    let lowestWeight = 200;
 
-    for(let value of current.neighbors){
+        for(let value of current.neighbors){
 
-        walls.push(value)
-        
-       // //console.log(value);
-       
-    }
-    //console.log(`jestem w petli przypisujacej sąsiadów do wall[]: i w tym momencie wygląda to tak:`);
-    //console.log(walls);
-    
-    
-    
+            walls.push(value)     
+           
+        }
+
+    let randomCell = Math.floor(Math.random() * (walls.length))
+    let randomWall = walls[randomCell];
+
     //third step: 
     
     if(walls.length > 0){
 
-        //Random, hight number
-        let lowestWeight = 200;
-    
-        let randomCell = Math.floor(Math.random() * (walls.length))
-        let randomWall = walls[randomCell];
-
-        //console.log(`jestem w głównej pętli while)`)
-        //console.log(walls.length)
-
-        console.log(lowestWeight);
-
-        console.log(`to jest wall po usunieciu elementow ktore sa w maze`)
-                for(let value of walls){
-
-                   console.log(value)
-                }
 
         for(let cell of walls){
             if(cell.weight < lowestWeight){
@@ -85,8 +67,6 @@ function primsAlgorithm (current) {
                 
             }
         }
-        console.log(`jestem w pętli sprawdzającej najmniejszą wartość sąsiadów, nie wiem, czy to działa poprawnie. Najmnijesza wartość to:`)
-        console.log(lowestWeight);
 
 
         for(let cell of walls){
@@ -105,8 +85,6 @@ function primsAlgorithm (current) {
                     
                 }
 
-                console.log(`jestem w pętli sprawdzającej ilu sąsiadów jest elementem ścieżki labiryntu: na ten moment wynosi ona:`)
-                console.log(neighborPath);
 
                 //checking if cell weight is lowest from neighbours and it has only one neighbor that is path element
 
@@ -115,11 +93,8 @@ function primsAlgorithm (current) {
 
             if(cell.weight === lowestWeight && neighborPath === 1 && cell.isWall){
 
-                console.log(cell.weight === lowestWeight)
-                console.log(neighborPath === 1)
-                console.log(cell.isWall)
 
-                //console.log(`jestem w pętli która sprawdza czy waga ściany jest najmniejsza i czy ma ona dokładnie jednego sasiada bedącego ścieżką`)
+              
                 cell.isWall = false;
                 maze.push(cell);
 
@@ -129,28 +104,10 @@ function primsAlgorithm (current) {
                 }
 
 
-               console.log(`to jest wall`)
-               
-                for(let value of walls){
 
-                    console.log(value)
-                }
+                
 
-
-                console.log(`to jest maze`)
-
-
-                for( let value of maze){
-
-
-                    //TEN DZIAŁA
-
-                    walls.splice(walls.indexOf(value), 1)
-
-
-                }
-
-                //removing duplicates from walls array
+                //removing duplicates from walls array, (Set object will lets you store only unique elements)
 
                 let unique = [...new Set(walls)];
                 walls = unique;
@@ -163,6 +120,12 @@ function primsAlgorithm (current) {
                 }
 
                
+                console.log(`to jest maze`)
+
+                for( let value of maze){
+                    console.log(value)
+
+                }
 
             }
 
@@ -171,13 +134,30 @@ function primsAlgorithm (current) {
 
         save++;
 
-        if(save === 3 ){
+        if(save === 50 ){
             //console.log("przekroczono limit")
             return;
         }
 
-        current = randomWall;
+        
+        for( let value of maze){
 
+
+            //TEN DZIAŁA
+
+            walls.splice(walls.indexOf(value), 1)
+
+
+        }
+
+        for(let value of walls){
+
+            if(value.isWall === false){
+                walls.splice(walls.indexOf(value), 1)
+            }
+        }
+
+        current = randomWall;
         primsAlgorithm(current);
 
     }
