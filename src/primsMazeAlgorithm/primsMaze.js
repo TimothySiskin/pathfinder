@@ -28,7 +28,7 @@ let save = 0;
 //secend step: chose a first cell and add it to the maze, next add neighbors to the walls:
 
 current.isWall = false;
-end.weight = 0;
+end.isWall = false;
 maze.push(current);
 
 //console.log(maze)
@@ -52,8 +52,6 @@ function primsAlgorithm (current) {
            
         }
 
-    let randomCell = Math.floor(Math.random() * (walls.length))
-    let randomWall = walls[randomCell];
 
     //third step: 
     
@@ -91,53 +89,50 @@ function primsAlgorithm (current) {
 
                 //Coś jest nie tak z tą pętlą, warunek logiczny wydaje się nie łapać wszystkiego
 
-            if(cell.weight === lowestWeight && neighborPath === 1 && cell.isWall){
+            if(cell.weight === lowestWeight && neighborPath === 1 && cell.isWall)
+            {
 
 
               
                 cell.isWall = false;
+
                 maze.push(cell);
 
                 for (let values of cell.neighbors){
+
                     walls.push(values)
                     
                 }
 
 
+            }
 
                 
 
-                //removing duplicates from walls array, (Set object will lets you store only unique elements)
+        //removing duplicates from walls array, (Set object will lets you store only unique elements)
 
-                let unique = [...new Set(walls)];
-                walls = unique;
+            let unique = [...new Set(walls)];
+            walls = unique;
 
 
-               console.log(`to jest wall po usunieciu elementow ktore sa w maze`)
-                for(let value of walls){
-
-                   console.log(value)
-                }
+            console.log(`to jest wall po usunieciu elementow ktore sa w maze`)
+            for(let value of walls)
+            {
+                 console.log(value)
+            }
 
                
-                console.log(`to jest maze`)
+            console.log(`to jest maze`)
 
-                for( let value of maze){
-                    console.log(value)
-
-                }
-
+            for( let value of maze)
+            {
+                console.log(value)
             }
 
 
         }
 
-        save++;
-
-        if(save === 50 ){
-            //console.log("przekroczono limit")
-            return;
-        }
+        
 
         
         for( let value of maze){
@@ -156,6 +151,17 @@ function primsAlgorithm (current) {
                 walls.splice(walls.indexOf(value), 1)
             }
         }
+
+        save++;
+
+        if(save === 10 ){
+            //console.log("przekroczono limit")
+            return;
+        }
+
+
+        let randomCell = Math.floor(Math.random() * (walls.length))
+        let randomWall = walls[randomCell];
 
         current = randomWall;
         primsAlgorithm(current);
