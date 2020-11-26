@@ -115,21 +115,6 @@ function primsAlgorithm (current) {
             walls = unique;
 
 
-            console.log(`to jest wall po usunieciu elementow ktore sa w maze`)
-            for(let value of walls)
-            {
-                 console.log(value)
-            }
-
-               
-            console.log(`to jest maze`)
-
-            for( let value of maze)
-            {
-                console.log(value)
-            }
-
-
         }
 
         
@@ -151,7 +136,25 @@ function primsAlgorithm (current) {
                 walls.splice(walls.indexOf(value), 1)
             }
         }
+//DEBUGGING
+//************************************************************* */
 
+        console.log(`to jest wall po usunieciu elementow ktore sa w maze`)
+        for(let value of walls)
+        {
+             console.log(value)
+        }
+
+           
+        console.log(`to jest maze`)
+
+        for( let value of maze)
+        {
+            console.log(value)
+        }
+
+
+/******************************************************************** */
         save++;
 
         if(save === 10 ){
