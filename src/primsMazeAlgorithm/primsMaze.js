@@ -7,20 +7,16 @@ let maze = [];
 let walls = [];
 
 //Random, hight number
-let lowestWeight = 200;
+
 
 
 //First step of algorithm: all cells must be walls
-//Additionaly I added a weight to all grid cells
-    for(let values of grid){
-    for(let value of values){
-        value.isWall = true;
-        value.weight = Math.floor(
-            Math.random() * 100
-            ) +1 ;
+
+for(let value of grid){
+    for(let cells of value){
+        cells.isWall = true;
     }
 }
-
 
 
 
@@ -56,15 +52,7 @@ function primsAlgorithm (current) {
         let randomCell = Math.floor(Math.random() * (walls.length))
         let randomWall = walls[randomCell];
 
-
-        for(let cell of walls){
-            if(cell.weight < lowestWeight){
-
-                lowestWeight = cell.weight 
-
-            }
-        }
-
+       
         for(let cell of walls){
 
             //Cheking if only one cell neighbor is a path
@@ -80,7 +68,7 @@ function primsAlgorithm (current) {
 
             //checking if cell weight is lowest from neighbours and it has only one neighbor that is path element
 
-           if(cell.weight === lowestWeight && neighborPath === 1){
+           if(neighborPath === 1){
 
            cell.isWall = false;
            for (let values of cell.neighbors){
@@ -89,7 +77,7 @@ function primsAlgorithm (current) {
 
            //i must pop cell from walls[]
 
-           walls.pop(walls.indexOf(cell), 1)
+           
 
         }
 
