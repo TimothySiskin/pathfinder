@@ -87,7 +87,6 @@ function primsAlgorithm (current) {
                 //checking if cell weight is lowest from neighbours and it has only one neighbor that is path element
 
 
-                //Coś jest nie tak z tą pętlą, warunek logiczny wydaje się nie łapać wszystkiego
 
             if(cell.weight === lowestWeight && neighborPath === 1 && cell.isWall)
             {
@@ -107,28 +106,24 @@ function primsAlgorithm (current) {
 
             }
 
-                
-
-        //removing duplicates from walls array, (Set object will lets you store only unique elements)
-
-            let unique = [...new Set(walls)];
-            walls = unique;
-
 
         }
 
-        
+        /************************************************************** */
 
+        //Removing maze from walls
         
         for( let value of maze){
 
-
-            //TEN DZIAŁA
-
             walls.splice(walls.indexOf(value), 1)
 
-
         }
+
+
+        //removing duplicates from walls array, (Set object will lets you store only unique elements)
+
+        let unique = [...new Set(walls)];
+        walls = unique;
 
         for(let value of walls){
 
@@ -136,6 +131,8 @@ function primsAlgorithm (current) {
                 walls.splice(walls.indexOf(value), 1)
             }
         }
+
+
 //DEBUGGING
 //************************************************************* */
 
@@ -155,6 +152,8 @@ function primsAlgorithm (current) {
 
 
 /******************************************************************** */
+      
+
         save++;
 
         if(save === 10 ){
@@ -167,6 +166,12 @@ function primsAlgorithm (current) {
         let randomWall = walls[randomCell];
 
         current = randomWall;
+        console.log(randomCell);
+        console.log(randomWall);
+        //console.log(current);
+        if(current === -1 ){
+            return;
+        }
         primsAlgorithm(current);
 
     }
