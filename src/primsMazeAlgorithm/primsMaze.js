@@ -5,6 +5,7 @@ let current = startNode;
 let end = endNode;
 let maze = [];
 let walls = [];
+let visited = [];
 
 let save = 0;
 
@@ -31,9 +32,6 @@ current.isWall = false;
 end.isWall = false;
 maze.push(current);
 
-//console.log(maze)
-
-
 
 
 
@@ -45,12 +43,16 @@ primsAlgorithm(current);
 function primsAlgorithm (current) {
     
     let lowestWeight = 200;
+    
+    //visited.push(newCurrent);
+    
+    
 
-        for(let value of current.neighbors){
+    for(let value of current.neighbors){
 
-            walls.push(value)     
+        walls.push(value)     
            
-        }
+    }
 
 
     //third step: 
@@ -99,7 +101,8 @@ function primsAlgorithm (current) {
 
                 for (let values of cell.neighbors){
 
-                    walls.push(values)
+                    walls.push(values);
+                    
                     
                 }
 
@@ -119,6 +122,11 @@ function primsAlgorithm (current) {
 
         }
 
+        for( let value of visited){
+
+            walls.splice(walls.indexOf(value), 1)
+
+        }
 
         //removing duplicates from walls array, (Set object will lets you store only unique elements)
 
@@ -165,14 +173,11 @@ function primsAlgorithm (current) {
         let randomCell = Math.floor(Math.random() * (walls.length))
         let randomWall = walls[randomCell];
 
-        current = randomWall;
+       let newCurrent = randomWall;
         console.log(randomCell);
         console.log(randomWall);
-        //console.log(current);
-        if(current === -1 ){
-            return;
-        }
-        primsAlgorithm(current);
+        
+        primsAlgorithm(newCurrent);
 
     }
 
