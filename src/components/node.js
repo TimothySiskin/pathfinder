@@ -10,7 +10,7 @@ const Node = ({isStart, isEnd, row, col, isWall, weight}) => {
     ? "node-end" 
     : "";
     return (
-        <div className={`node ${classes}`} id={`node-${col}-${row}`}> {weight} </div>
+        <div className={`node ${classes}`} id={`node-${col}-${row}`}>  </div>
     )
 }
 
