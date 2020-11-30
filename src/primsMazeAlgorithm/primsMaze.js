@@ -22,7 +22,15 @@ for(let cells of grid){
 //secend step: chose a first cell and add it to the maze, next add neighbors to the walls:
 
 current.isWall = false;
-end.isWall = false;
+end.isWall = true;
+
+maze.push(current);
+
+        for(let value of current.neighbors){
+
+            walls.push(value)
+        
+        }
 
 
 
@@ -33,32 +41,20 @@ primsAlgorithm(current);
 
 function primsAlgorithm (current) 
 {
-
-        maze.push(current);
-
-        for(let value of current.neighbors){
-
-            walls.push(value)
-        
-        }
-
-        
-        
-        
+ 
         //third step: 
         
         if(walls.length > 0){
         
 
         
-            for(let cell of walls)
-            {
+            
 
                 //Cheking if only one cell neighbor is a path
 
                 let neighborPath = 0;
 
-                for(let value of cell.neighbors){
+                for(let value of current.neighbors){
                     if(value.isWall === false ){
                         neighborPath++ 
                     }
@@ -70,30 +66,26 @@ function primsAlgorithm (current)
                 if(neighborPath === 1)
                 {
 
-                    cell.isWall = false;
+                    current.isWall = false;
+                    maze.push(current)
+                    for (let values of current.neighbors){
+                        walls.push(values)
+    
+                    }
+    
                 
                 }
 
-                for (let values of cell.neighbors){
-                    walls.push(values)
-
-                }
+                
 
 
-
-            }
+            
 
         }
 
         /****************************************************************************************k */
 
-            //Removing maze from walls
             
-            for( let value of maze){
-
-                walls.splice(walls.indexOf(value), 1)
-
-            }
 
 
             //removing duplicates from walls array, (Set object will lets you store only unique elements)
@@ -101,28 +93,57 @@ function primsAlgorithm (current)
             let unique = [...new Set(walls)];
             walls = unique;
 
-            for(let value of walls){
+            //Removing maze from walls
+            
+            // for( let value of maze){
 
-                if(value.isWall === false){
-                    walls.splice(walls.indexOf(value), 1)
-                }
-            }
+            //     walls.splice(walls.indexOf(value), 1)
+
+            // }
+
+           walls =  walls.filter( (element) => {
+                return !maze.includes(element)
+            })
+
+            // for(let value of walls){
+
+            //     if(value.isWall === false){
+            //         walls.splice(walls.indexOf(value), 1)
+            //     }
+            // }
 
         /**************************************************************************************** */
+
+//DEBUGING
+// console.log(`maze`)
+//  for(let value of maze){
+
+//     console.log(value)
+//  }       
+// console.log(`walls`)
+//  for(let value of walls){
+//      console.log(value)
+//  }
+
+
+ /*********************************************************************************************** */
+
             let randomCell = Math.floor(Math.random() * (walls.length))
             let randomWall = walls[randomCell];
+            recursion++;
 
-            if(recursion === 5){
+            if(recursion === 600){
                 return;
             }
 
-             recursion++;
-
+             
 
             primsAlgorithm(randomWall);
 
 
     }
+
+    end.isWall = false;
 
 }
 

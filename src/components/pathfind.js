@@ -7,7 +7,7 @@ import "./pathfind.css"
 //DECLARING ROWS AND COLLUMNS FOR GRID
 
 const rows = 10;
-const cols = 10;
+const cols = 20;
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
