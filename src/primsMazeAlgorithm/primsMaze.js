@@ -13,8 +13,10 @@ let recursion = 0;
 
 //First step of algorithm: all cells must be walls
 
-for(let cell of grid){
-    console.log(cell)
+for(let cells of grid){
+    for(let value of cells){
+        value.isWall = true;
+    }
 }
 
 //secend step: chose a first cell and add it to the maze, next add neighbors to the walls:
@@ -49,7 +51,8 @@ function primsAlgorithm (current)
         
 
         
-            for(let cell of walls){
+            for(let cell of walls)
+            {
 
                 //Cheking if only one cell neighbor is a path
 
@@ -59,25 +62,22 @@ function primsAlgorithm (current)
                     if(value.isWall === false ){
                         neighborPath++ 
                     }
-                    
+                        
                 }
 
-                //checking if cell weight is lowest from neighbours and it has only one neighbor that is path element
+               
 
-            if(neighborPath === 1){
+                if(neighborPath === 1)
+                {
 
-            cell.isWall = false;
-            
-            }
+                    cell.isWall = false;
+                
+                }
 
-            for (let values of cell.neighbors){
-                walls.push(values)
+                for (let values of cell.neighbors){
+                    walls.push(values)
 
-            //i must pop cell from walls[]
-
-
-
-            }
+                }
 
 
 
@@ -112,12 +112,12 @@ function primsAlgorithm (current)
             let randomCell = Math.floor(Math.random() * (walls.length))
             let randomWall = walls[randomCell];
 
-            if(recursion = 3){
+            if(recursion === 5){
                 return;
             }
-            else recursion++;
 
-            
+             recursion++;
+
 
             primsAlgorithm(randomWall);
 

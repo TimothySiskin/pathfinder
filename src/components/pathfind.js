@@ -48,7 +48,7 @@ const initializeGrid = () => {
     const endNode = grid[NODE_END_COL][NODE_END_ROW];
 
     let path = Astar(startNode, endNode);
-   // primsMaze(grid, startNode, endNode);
+    primsMaze(grid, startNode, endNode);
 
     startNode.isWall = false;
     endNode.isWall = false;
@@ -192,7 +192,7 @@ const visualizePath = () => {
 
         <div>
             <button onClick={visualizePath}>Visualize Path</button>
-            {/* <button onClick={createMaze}>Create Maze</button> */}
+            
             <h1>PathFind Component!</h1>
             {gridWithNode}
         </div>
