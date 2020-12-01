@@ -115,21 +115,17 @@ function primsAlgorithm (current)
 
             let randomCell = Math.floor(Math.random() * (walls.length))
             let randomWall = walls[randomCell];
+
             recursion++;
 
             if(recursion === 600){
-                return;
+                return maze;
             }
 
              
 
             primsAlgorithm(randomWall);
 
-       let newCurrent = randomWall;
-        console.log(randomCell);
-        console.log(randomWall);
-        
-        primsAlgorithm(newCurrent);
 
     
 

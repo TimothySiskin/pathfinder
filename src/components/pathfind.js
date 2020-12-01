@@ -48,7 +48,7 @@ const initializeGrid = () => {
     const endNode = grid[NODE_END_COL][NODE_END_ROW];
 
     let path = Astar(startNode, endNode);
-    primsMaze(grid, startNode, endNode);
+    let prims = primsMaze(grid, startNode, endNode);
 
     startNode.isWall = false;
     endNode.isWall = false;
@@ -56,6 +56,8 @@ const initializeGrid = () => {
     setPath(path.path);
     setVisitedNodes(path.visitedNodes);
 
+    setMaze(prims);
+    console.log(prims);
 
 }
 
@@ -99,7 +101,7 @@ function Spot(i, j){
     this.f = 0;
     this.h = 0;
     this.neighbors = [];
-    this.isWall = false;
+    this.isWall = true;
     this.weight = 0;
 
     // if(Math.random(1) < 0.2){
@@ -185,6 +187,13 @@ const visualizePath = () => {
 }
 
 
+const visualizeMaze = () =>{
+
+    for(let cell of Maze){
+        document.getElementById(`node-${cell.x}-${cell.y}`).isWall = false;
+    }
+}
+
 
 //RENDERING PATHFIND COMPONENT
 
@@ -192,7 +201,7 @@ const visualizePath = () => {
 
         <div>
             <button onClick={visualizePath}>Visualize Path</button>
-            
+            {visualizeMaze()}
             <h1>PathFind Component!</h1>
             {gridWithNode}
         </div>
