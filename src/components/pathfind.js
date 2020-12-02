@@ -57,7 +57,8 @@ const initializeGrid = () => {
     setPath(path.path);
     setVisitedNodes(path.visitedNodes);
 
-    setMaze(prims);
+    console.log(prims)
+    visualizeMaze(prims)
 
 }
 
@@ -187,18 +188,14 @@ const visualizePath = () => {
 }
 
 
-const visualizeMaze = () =>{
+const visualizeMaze = (prims) =>{
 
-    for(let cell of Maze){
-        document.getElementById(`node-${cell.x}-${cell.y}`).isWall = false;
+    for(let cell of prims){
+        console.log(document.getElementById(`node-${cell.x}-${cell.y}`));
     }
 }
 
-setMaze((prims) => {
-    for(let cells of prims){
-        document.getElementById(`node-${cells.x}-${cells.y}`).isWall = false;
-    }
-});
+
 
 
 //RENDERING PATHFIND COMPONENT
@@ -207,7 +204,7 @@ setMaze((prims) => {
 
         <div>
             <button onClick={visualizePath}>Visualize Path</button>
-            {/* {visualizeMaze()} */}
+            
             <h1>PathFind Component!</h1>
             {gridWithNode}
         </div>

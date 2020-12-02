@@ -119,6 +119,7 @@ function primsAlgorithm (current)
             recursion++;
 
             if(recursion === 600){
+                
                 return maze;
             }
 
@@ -132,6 +133,8 @@ function primsAlgorithm (current)
     }
 
     end.isWall = false;
+
+    return maze;
 
 }
 
