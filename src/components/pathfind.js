@@ -22,7 +22,7 @@ const Pathfind = () => {
 const [Grid, setGrid] = useState([]);
 const [Path, setPath] = useState([]);
 const [VisitedNodes, setVisitedNodes] = useState([]);
-const [Maze, setMaze] = useState([]);
+const [Maze, setMaze] = useState();
 
 
 useEffect( () => {
@@ -49,6 +49,7 @@ const initializeGrid = () => {
 
     let path = Astar(startNode, endNode);
     let prims = primsMaze(grid, startNode, endNode);
+    
 
     startNode.isWall = false;
     endNode.isWall = false;
@@ -57,7 +58,6 @@ const initializeGrid = () => {
     setVisitedNodes(path.visitedNodes);
 
     setMaze(prims);
-    console.log(prims);
 
 }
 
@@ -194,6 +194,12 @@ const visualizeMaze = () =>{
     }
 }
 
+setMaze((prims) => {
+    for(let cells of prims){
+        document.getElementById(`node-${cells.x}-${cells.y}`).isWall = false;
+    }
+});
+
 
 //RENDERING PATHFIND COMPONENT
 
@@ -201,7 +207,7 @@ const visualizeMaze = () =>{
 
         <div>
             <button onClick={visualizePath}>Visualize Path</button>
-            {visualizeMaze()}
+            {/* {visualizeMaze()} */}
             <h1>PathFind Component!</h1>
             {gridWithNode}
         </div>
