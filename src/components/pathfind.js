@@ -191,7 +191,8 @@ const visualizePath = () => {
 const visualizeMaze = (prims) =>{
 
     for(let cell of prims){
-        console.log(document.getElementById(`node-${cell.x}-${cell.y}`));
+        let temp = document.getElementById(`node-${cell.x}-${cell.y}`)
+        console.log(temp);
     }
 }
 
