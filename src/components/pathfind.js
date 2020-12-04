@@ -22,7 +22,7 @@ const Pathfind = () => {
 const [Grid, setGrid] = useState([]);
 const [Path, setPath] = useState([]);
 const [VisitedNodes, setVisitedNodes] = useState([]);
-const [Maze, setMaze] = useState();
+const [Maze, setMaze] = useState([]);
 
 
 useEffect( () => {
@@ -49,16 +49,14 @@ const initializeGrid = () => {
 
     let path = Astar(startNode, endNode);
     let prims = primsMaze(grid, startNode, endNode);
-    
 
-    startNode.isWall = false;
-    endNode.isWall = false;
 
     setPath(path.path);
     setVisitedNodes(path.visitedNodes);
+    
 
-    console.log(prims)
-    visualizeMaze(prims)
+    setMaze(prims.walls);
+    
 
 }
 
@@ -102,13 +100,13 @@ function Spot(i, j){
     this.f = 0;
     this.h = 0;
     this.neighbors = [];
-    this.isWall = true;
-    this.weight = 0;
+    this.isWall = false;
 
     // if(Math.random(1) < 0.2){
     //     this.isWall = true;
     // }
 
+    this.weight = 0;
     this.previous = undefined;
     this.addneighbors = function (grid) {
         let i = this.x;
@@ -179,21 +177,33 @@ const visualizePath = () => {
 
             setTimeout(() => {
             const node = VisitedNodes[i]
-            document.getElementById(`node-${node.x}-${node.y}`).className = 
-            "node node-visited";
+            document.getElementById(`node-${node.x}-${node.y}`).className += 
+            " node-visited";
+            console.log(document.getElementById(`node-${node.x}-${node.y}`));
             }, 20 * i)
             
         }
     }
+    
 }
 
 
-const visualizeMaze = (prims) =>{
+const visualizeMaze = () =>{
 
-    for(let cell of prims){
-        let temp = document.getElementById(`node-${cell.x}-${cell.y}`)
-        console.log(temp);
+    for(let cell of Maze){
+        document.getElementById(`node-${cell.x}-${cell.y}`)
+        .className += " isWall";
+        console.log(document.getElementById(`node-${cell.x}-${cell.y}`));
+       
     }
+
+    // for(let i = 0; i<Maze.length; i++){
+    //     const node = Maze[i];
+    //     document.getElementById(`node-${node.x}-${node.y}`).className += " isWall"
+    // }
+    
+    //console.log(document.getElementById(`node-1-1`));
+
 }
 
 
@@ -205,9 +215,10 @@ const visualizeMaze = (prims) =>{
 
         <div>
             <button onClick={visualizePath}>Visualize Path</button>
-            
+            <button onClick={visualizeMaze}>Create Maze</button>
             <h1>PathFind Component!</h1>
             {gridWithNode}
+            
         </div>
     )
 
