@@ -47,16 +47,13 @@ const initializeGrid = () => {
     const startNode = grid[NODE_START_COL][NODE_START_ROW];
     const endNode = grid[NODE_END_COL][NODE_END_ROW];
 
-    let path = Astar(startNode, endNode);
+    
     let prims = primsMaze(grid, startNode, endNode);
+    setMaze(prims.walls);
 
-
+    let path = Astar(startNode, endNode);
     setPath(path.path);
     setVisitedNodes(path.visitedNodes);
-    
-
-    setMaze(prims.walls);
-    
 
 }
 
@@ -179,7 +176,7 @@ const visualizePath = () => {
             const node = VisitedNodes[i]
             document.getElementById(`node-${node.x}-${node.y}`).className += 
             " node-visited";
-            console.log(document.getElementById(`node-${node.x}-${node.y}`));
+            
             }, 20 * i)
             
         }
@@ -193,8 +190,23 @@ const visualizeMaze = () =>{
     for(let cell of Maze){
         document.getElementById(`node-${cell.x}-${cell.y}`)
         .className += " isWall";
-        console.log(document.getElementById(`node-${cell.x}-${cell.y}`));
        
+       
+    }
+
+    // for(let cell of Maze){
+    //     console.log(cell.isWall);
+    // }
+
+
+    for(let cell of Maze){
+        cell.isWall = true;
+    }
+
+console.log(`po nadpisaniu Maze->cells.isWall na true`)
+
+    for(let cell of Maze){
+        console.log(cell);
     }
 
     // for(let i = 0; i<Maze.length; i++){
