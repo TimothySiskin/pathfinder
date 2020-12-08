@@ -6,8 +6,8 @@ import "./pathfind.css"
 
 //DECLARING ROWS AND COLLUMNS FOR GRID
 
-const rows = 10;
-const cols = 20;
+const rows = 15;
+const cols = 40;
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
@@ -42,7 +42,7 @@ const initializeGrid = () => {
     
     setGrid(grid);
 
-     addNeighbors(grid);
+    addNeighbors(grid);
 
     const startNode = grid[NODE_START_COL][NODE_START_ROW];
     const endNode = grid[NODE_END_COL][NODE_END_ROW];
@@ -98,11 +98,6 @@ function Spot(i, j){
     this.h = 0;
     this.neighbors = [];
     this.isWall = false;
-
-    // if(Math.random(1) < 0.2){
-    //     this.isWall = true;
-    // }
-
     this.weight = 0;
     this.previous = undefined;
     this.addneighbors = function (grid) {
@@ -194,9 +189,6 @@ const visualizeMaze = () =>{
        
     }
 
-    // for(let cell of Maze){
-    //     console.log(cell.isWall);
-    // }
 
 
     for(let cell of Maze){
@@ -209,12 +201,6 @@ console.log(`po nadpisaniu Maze->cells.isWall na true`)
         console.log(cell);
     }
 
-    // for(let i = 0; i<Maze.length; i++){
-    //     const node = Maze[i];
-    //     document.getElementById(`node-${node.x}-${node.y}`).className += " isWall"
-    // }
-    
-    //console.log(document.getElementById(`node-1-1`));
 
 }
 

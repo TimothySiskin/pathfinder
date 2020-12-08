@@ -1,11 +1,10 @@
 function primsMaze(grid, startNode, endNode){
 
 let current = startNode;
-
 let end = endNode;
+
 let maze = [];
 let walls = [];
-let visited = [];
 
 
 
@@ -78,10 +77,6 @@ function primsAlgorithm (current)
     
                 
                 }
-
-                
-
-
             
 
         }
@@ -106,11 +101,6 @@ function primsAlgorithm (current)
 
            
 
-        /**************************************************************************************** */
-
-
-
-
  /*********************************************************************************************** */
 
             let randomCell = Math.floor(Math.random() * (walls.length))
@@ -118,7 +108,7 @@ function primsAlgorithm (current)
 
             recursion++;
 
-            if(recursion === 600){
+            if(recursion === 3300){
                 
                 return;
             }
