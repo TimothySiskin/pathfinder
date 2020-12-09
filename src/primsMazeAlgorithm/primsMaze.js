@@ -6,6 +6,7 @@ let end = endNode;
 let maze = [];
 let walls = [];
 
+let visited = [];
 
 
 let recursion = 0;
@@ -109,7 +110,10 @@ function primsAlgorithm (current)
             recursion++;
 
             if(recursion === 3300){
-                
+                console.log(`this is walls`)
+                console.log(walls)
+                console.log(`This is maze:`)
+                console.log(maze)
                 return;
             }
 
