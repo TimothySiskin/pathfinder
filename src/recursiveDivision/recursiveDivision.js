@@ -15,17 +15,32 @@ createChamber();
 
 
 
-function gridIsWall(grid){
-    for(let cell of grid){
-        maze.push(cell)
-    }
+    function gridIsWall(grid){
+        for(let cell of grid){
+            maze.push(cell)
+        }
 
-    for(let cell of maze)
+        for(let cell of maze)
+        {
+            cell.isWall = false;
+        }
+    };
+
+
+    function createBox(maze)
     {
-        cell.isWall = false;
+        //I must creata a "row of isWall = true" on (0, Y) axis, (X, 0) axis, (max X, Y), (X, max Y)
+        
+        return;
     }
-};
-
+        
+    function createChamber()
+    {
+        
+        //I must divide chamber into two seperate chambers, divided by wall with single opening cell
+        
+    }
 
 }
+
 export default recursiveDivision
