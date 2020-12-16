@@ -31,7 +31,26 @@ createChamber();
     {
         //I must creata a "row of isWall = true" on (0, Y) axis, (X, 0) axis, (max X, Y), (X, max Y)
         
-        return;
+        for(cell of maze)
+        {
+            cell.y === 0 
+            ? cell.isWall = true 
+            : null
+
+            cell.x === 0
+            ? cell.isWall = true
+            : null
+
+            cell.y === (maze.length - 1)
+            ? cell.isWall = true
+            : null
+
+            cell.x === (maze.length - 1)
+            ? cell.isWall = true
+            : null
+
+        }
+        
     }
         
     function createChamber()
