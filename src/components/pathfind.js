@@ -3,6 +3,7 @@ import Node from './node'
 import Astar from '../aStarAlgorithm/aStar'
 import primsMaze from '../primsMazeAlgorithm/primsMaze'
 import "./pathfind.css"
+import recursiveDivision from'../recursiveDivision/recursiveDivision'
 
 //DECLARING ROWS AND COLLUMNS FOR GRID
 
@@ -48,8 +49,11 @@ const initializeGrid = () => {
     const endNode = grid[NODE_END_COL][NODE_END_ROW];
 
     
-    let prims = primsMaze(grid, startNode, endNode);
-    setMaze(prims.walls);
+    // let prims = primsMaze(grid, startNode, endNode);
+    // setMaze(prims.walls);
+
+    let recursive = recursiveDivision(grid, startNode, endNode)
+    setMaze(recursive.maze)
 
     let path = Astar(startNode, endNode);
     setPath(path.path);

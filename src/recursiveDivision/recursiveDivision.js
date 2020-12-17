@@ -50,6 +50,8 @@ createChamber();
             : null
 
         }
+
+        //Simplify logic with OR ( || )
         
     }
         
@@ -60,6 +62,7 @@ createChamber();
         
     }
 
+    return {maze, walls}
 }
 
 export default recursiveDivision
