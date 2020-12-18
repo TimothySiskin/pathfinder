@@ -1,7 +1,7 @@
 function recursiveDivision(grid, startNode, endNode){
 
 let maze = []
-let wals = []
+let walls = []
 
 //1. All grid is not walls => this is a orginal chamber
 
@@ -31,23 +31,33 @@ createChamber();
     {
         //I must creata a "row of isWall = true" on (0, Y) axis, (X, 0) axis, (max X, Y), (X, max Y)
         
-        for(cell of maze)
+        for(let cell of maze)
         {
-            cell.y === 0 
-            ? cell.isWall = true 
-            : null
+            
+            if((cell.y === 0))
+            {
+                cell.isWall = true
+            }
+            else if ((cell.x === 0))
+            {
+                cell.isWall = true
+            }
+            else if (cell.y === (maze.length - 1))
+            {
+                cell.isWall = true
+            }
+            else if (cell.x === (maze.length - 1))
+            {
+                cell.isWall = true
+            }
+            
 
-            cell.x === 0
-            ? cell.isWall = true
-            : null
 
-            cell.y === (maze.length - 1)
-            ? cell.isWall = true
-            : null
-
-            cell.x === (maze.length - 1)
-            ? cell.isWall = true
-            : null
+            // return (cell.y === 0) ? cell.isWall = true 
+            // : (cell.x === 0) ? cell.isWall = true
+            // : (cell.y === (maze.length - 1)) ? cell.isWall = true
+            // : (cell.x === (maze.length - 1)) ? cell.isWall = true
+            // : null
 
         }
 
