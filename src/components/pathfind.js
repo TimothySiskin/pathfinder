@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Node from "./node";
 import Astar from "../aStarAlgorithm/aStar";
 import primsMaze from "../primsMazeAlgorithm/primsMaze";
@@ -22,9 +22,21 @@ const Pathfind = () => {
   const [startAndEnd, setStartAndEnd] = useState({});
   const [Maze, setMaze] = useState({});
 
+  const isInitialMount = useRef(true);
+
   useEffect(() => {
     initializeGrid();
   }, []);
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      console.log(startAndEnd);
+      mazeGen(primsMaze);
+      pathFindAlg(Astar);
+    }
+  }, [startAndEnd]);
 
   //FUNCTION TO CREATE GRID
   const initializeGrid = () => {
@@ -45,6 +57,19 @@ const Pathfind = () => {
       end: grid[NODE_END_COL][NODE_END_ROW],
     });
   };
+
+  //Function pathfinding alg
+
+  function pathFindAlg(func) {
+    let path = func(startAndEnd.start, startAndEnd.end);
+    setVisitedNodes(path.visitedNodes);
+    setPath(path.path);
+  }
+
+  function mazeGen(func) {
+    let maze = func(Grid, startAndEnd.start, startAndEnd.end);
+    setMaze(maze);
+  }
 
   //CREATE THE SPOT
 
@@ -120,15 +145,7 @@ const Pathfind = () => {
   //Visualize Path
 
   const visualizePath = () => {
-    let path = Astar(startAndEnd.start, startAndEnd.end);
-    setVisitedNodes(path.visitedNodes);
-    setPath(path.path);
-
     animate();
-
-    console.log(path);
-    console.log(VisitedNodes);
-    console.log(Path);
 
     function animate() {
       for (let i = 0; i <= VisitedNodes.length; i++) {
@@ -160,16 +177,13 @@ const Pathfind = () => {
   /********************************************************************** */
 
   const visualizeMaze = () => {
-    let maze = primsMaze(Grid, startAndEnd.start, startAndEnd.end);
-    setMaze(maze);
-
     animate();
 
     function animate() {
       let index = 0;
       for (let cells of Grid) {
         for (let cell of cells) {
-          if (!maze.has(cell)) {
+          if (!Maze.has(cell)) {
             setTimeout(() => {
               const { x, y } = cell;
               document.getElementById(`node-${x}-${y}`).className += " isWall";
@@ -186,10 +200,12 @@ const Pathfind = () => {
   return (
     <div>
       <h1>PathFind Component!</h1>
+
       <div>
         <button onClick={visualizePath}>Visualize Path</button>
         <button onClick={visualizeMaze}>Create Maze</button>
       </div>
+
       <div>{gridWithNode}</div>
     </div>
   );
