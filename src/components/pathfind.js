@@ -19,7 +19,8 @@ const Pathfind = () => {
   const [Grid, setGrid] = useState([]);
   const [Path, setPath] = useState([]);
   const [VisitedNodes, setVisitedNodes] = useState([]);
-  const [Maze, setMaze] = useState([]);
+  const [startAndEnd, setStartAndEnd] = useState({});
+  const [Maze, setMaze] = useState({});
 
   useEffect(() => {
     initializeGrid();
@@ -39,18 +40,10 @@ const Pathfind = () => {
 
     addNeighbors(grid);
 
-    const startNode = grid[NODE_START_COL][NODE_START_ROW];
-    const endNode = grid[NODE_END_COL][NODE_END_ROW];
-
-    primsMaze(grid, startNode, endNode);
-
-    //let recursive = recursiveDivision(grid, startNode, endNode);
-    //setMaze(recursive.maze);
-
-    let path = Astar(startNode, endNode);
-
-    setVisitedNodes(path.visitedNodes);
-    setPath(path.path);
+    setStartAndEnd({
+      start: grid[NODE_START_COL][NODE_START_ROW],
+      end: grid[NODE_END_COL][NODE_END_ROW],
+    });
   };
 
   //CREATE THE SPOT
@@ -124,46 +117,67 @@ const Pathfind = () => {
     </div>
   );
 
-  const visualizeShortesPath = (shotestPathNodes) => {
-    for (let i = 0; i < shotestPathNodes.length; i++) {
-      setTimeout(() => {
-        const { x, y } = shotestPathNodes[i];
-        document.getElementById(`node-${x}-${y}`).className =
-          "node node-shortest-path";
-      }, 10 * i);
-    }
-  };
+  //Visualize Path
 
   const visualizePath = () => {
-    for (let i = 0; i <= VisitedNodes.length; i++) {
-      if (i === VisitedNodes.length) {
-        setTimeout(() => {
-          visualizeShortesPath(Path);
-        }, 20 * i);
-      } else {
-        setTimeout(() => {
-          const node = VisitedNodes[i];
-          document.getElementById(`node-${node.x}-${node.y}`).className +=
-            " node-visited";
-        }, 20 * i);
+    let path = Astar(startAndEnd.start, startAndEnd.end);
+    setVisitedNodes(path.visitedNodes);
+    setPath(path.path);
+
+    animate();
+
+    console.log(path);
+    console.log(VisitedNodes);
+    console.log(Path);
+
+    function animate() {
+      for (let i = 0; i <= VisitedNodes.length; i++) {
+        if (i === VisitedNodes.length) {
+          setTimeout(() => {
+            visualizeShortesPath(Path);
+          }, 20 * i);
+        } else {
+          setTimeout(() => {
+            const node = VisitedNodes[i];
+            document.getElementById(`node-${node.x}-${node.y}`).className +=
+              " node-visited";
+          }, 20 * i);
+        }
       }
+
+      const visualizeShortesPath = (shotestPathNodes) => {
+        for (let i = 0; i < shotestPathNodes.length; i++) {
+          setTimeout(() => {
+            const { x, y } = shotestPathNodes[i];
+            document.getElementById(`node-${x}-${y}`).className +=
+              "node node-shortest-path";
+          }, 10 * i);
+        }
+      };
     }
   };
 
+  /********************************************************************** */
+
   const visualizeMaze = () => {
-    for (let cell of Maze) {
-      document.getElementById(`node-${cell.x}-${cell.y}`).className +=
-        " isWall";
-    }
+    let maze = primsMaze(Grid, startAndEnd.start, startAndEnd.end);
+    setMaze(maze);
 
-    for (let cell of Maze) {
-      cell.isWall = true;
-    }
+    animate();
 
-    console.log(`po nadpisaniu Maze->cells.isWall na true`);
-
-    for (let cell of Maze) {
-      console.log(cell);
+    function animate() {
+      let index = 0;
+      for (let cells of Grid) {
+        for (let cell of cells) {
+          if (!maze.has(cell)) {
+            setTimeout(() => {
+              const { x, y } = cell;
+              document.getElementById(`node-${x}-${y}`).className += " isWall";
+            }, 5 * index);
+          }
+          index++;
+        }
+      }
     }
   };
 
@@ -171,10 +185,12 @@ const Pathfind = () => {
 
   return (
     <div>
-      <button onClick={visualizePath}>Visualize Path</button>
-      <button onClick={visualizeMaze}>Create Maze</button>
       <h1>PathFind Component!</h1>
-      {gridWithNode}
+      <div>
+        <button onClick={visualizePath}>Visualize Path</button>
+        <button onClick={visualizeMaze}>Create Maze</button>
+      </div>
+      <div>{gridWithNode}</div>
     </div>
   );
 };
