@@ -62,12 +62,12 @@ function primsMaze(grid, startNode, endNode) {
     let randomWall = wallsArr[randomCell];
 
     walls.delete(randomWall);
-    console.log(walls);
 
     primsAlgorithm(randomWall);
   }
 
   end.isWall = false;
+  return maze;
 }
 
 export default primsMaze;
