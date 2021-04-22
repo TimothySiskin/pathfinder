@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react'
-import Node from './node'
-import Astar from '../aStarAlgorithm/aStar'
-import primsMaze from '../primsMazeAlgorithm/primsMaze'
-import "./pathfind.css"
+import React, { useState, useEffect } from "react";
+import Node from "./node";
+import Astar from "../aStarAlgorithm/aStar";
+import primsMaze from "../primsMazeAlgorithm/primsMaze";
+import "./pathfind.css";
 
 //DECLARING ROWS AND COLLUMNS FOR GRID
 
-const rows = 10;
-const cols = 20;
+const rows = 20;
+const cols = 30;
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
@@ -15,82 +15,67 @@ const NODE_START_COL = 0;
 const NODE_END_ROW = rows - 1;
 const NODE_END_COL = cols - 1;
 
-
-
 const Pathfind = () => {
+  const [Grid, setGrid] = useState([]);
+  const [Path, setPath] = useState([]);
+  const [VisitedNodes, setVisitedNodes] = useState([]);
+  const [Maze, setMaze] = useState([]);
 
-const [Grid, setGrid] = useState([]);
-const [Path, setPath] = useState([]);
-const [VisitedNodes, setVisitedNodes] = useState([]);
-const [Maze, setMaze] = useState([]);
-
-
-useEffect( () => {
+  useEffect(() => {
     initializeGrid();
-}, [])
+  }, []);
 
-//FUNCTION TO CREATE GRID
-const initializeGrid = () => {
+  //FUNCTION TO CREATE GRID
+  const initializeGrid = () => {
     const grid = new Array(cols);
 
-    for (let i = 0; i < cols; i++){
-
-        grid[i] = new Array(rows)
+    for (let i = 0; i < cols; i++) {
+      grid[i] = new Array(rows);
     }
-        
+
     createSpot(grid);
-    
+
     setGrid(grid);
 
-     addNeighbors(grid);
+    addNeighbors(grid);
 
     const startNode = grid[NODE_START_COL][NODE_START_ROW];
     const endNode = grid[NODE_END_COL][NODE_END_ROW];
 
-    let path = Astar(startNode, endNode);
     primsMaze(grid, startNode, endNode);
 
     startNode.isWall = false;
     endNode.isWall = false;
 
-    setPath(path.path);
+    let path = Astar(startNode, endNode);
+
     setVisitedNodes(path.visitedNodes);
+    setPath(path.path);
+  };
 
+  //CREATE THE SPOT
 
-}
-
-//CREATE THE SPOT
-
-const createSpot = (grid) => {
-
-    for( let i = 0; i < cols; i++){
-
-        for(let j = 0; j < rows; j++){
-
-            grid[i][j] = new Spot(i, j);
-        }
+  const createSpot = (grid) => {
+    for (let i = 0; i < cols; i++) {
+      for (let j = 0; j < rows; j++) {
+        grid[i][j] = new Spot(i, j);
+      }
     }
-}
+  };
 
+  //Add neighbors
 
-//Add neighbors
-
-
-const addNeighbors = (grid) => {
-
-    for(let i = 0; i < cols; i++){
-        for(let j = 0; j < rows; j++){
-            grid[i][j].addneighbors(grid);
-        }
+  const addNeighbors = (grid) => {
+    for (let i = 0; i < cols; i++) {
+      for (let j = 0; j < rows; j++) {
+        grid[i][j].addneighbors(grid);
+      }
     }
-}
+  };
 
+  //SPOT CONSTRUCTOR
 
-
-
-//SPOT CONSTRUCTOR
-
-function Spot(i, j){
+  function Spot(i, j) {
     this.x = i;
     this.y = j;
     this.isStart = this.x === NODE_START_COL && this.y === NODE_START_ROW;
@@ -108,96 +93,78 @@ function Spot(i, j){
 
     this.previous = undefined;
     this.addneighbors = function (grid) {
-        let i = this.x;
-        let j = this.y;
-        if( i > 0) this.neighbors.push(grid[i-1][j]);
-        if(i < cols - 1) this.neighbors.push(grid[i+1][j]);
-        if(j > 0) this.neighbors.push(grid[i][j-1]);
-        if(j < rows - 1) this.neighbors.push(grid[i][j+1]);
+      let i = this.x;
+      let j = this.y;
+      if (i > 0) this.neighbors.push(grid[i - 1][j]);
+      if (i < cols - 1) this.neighbors.push(grid[i + 1][j]);
+      if (j > 0) this.neighbors.push(grid[i][j - 1]);
+      if (j < rows - 1) this.neighbors.push(grid[i][j + 1]);
     };
-}
+  }
 
+  //GRID WITH NODE
 
-//GRID WITH NODE
-
-const gridWithNode = (
-
-    <div className="container"> 
-        {Grid.map((cols, colsIndex) => {
-            return (
-                <div key={colsIndex}>
-                    {cols.map((rows, rowsIndex) => {
-                            const{isStart, isEnd, isWall, weight} = rows;
-                            return(
-                                <Node 
-                                key = {rowsIndex}
-                                isStart={isStart}
-                                isEnd={isEnd}
-                                row={rowsIndex}
-                                col={colsIndex}
-                                isWall = {isWall}
-                                weight = {weight} />
-                            )
-                        }
-                    )
-                    }
-                </div>   
-                
-            )
-        }
-        )
-    }
-        
+  const gridWithNode = (
+    <div className="container">
+      {Grid.map((cols, colsIndex) => {
+        return (
+          <div key={colsIndex}>
+            {cols.map((rows, rowsIndex) => {
+              const { isStart, isEnd, isWall, weight } = rows;
+              return (
+                <Node
+                  key={rowsIndex}
+                  isStart={isStart}
+                  isEnd={isEnd}
+                  row={rowsIndex}
+                  col={colsIndex}
+                  isWall={isWall}
+                  weight={weight}
+                />
+              );
+            })}
+          </div>
+        );
+      })}
     </div>
-) 
+  );
 
-const visualizeShortesPath = (shotestPathNodes) =>{
-    for(let i = 0; i < shotestPathNodes.length; i++){
+  const visualizeShortesPath = (shotestPathNodes) => {
+    for (let i = 0; i < shotestPathNodes.length; i++) {
+      setTimeout(() => {
+        const { x, y } = shotestPathNodes[i];
+        document.getElementById(`node-${x}-${y}`).className =
+          "node node-shortest-path";
+      }, 10 * i);
+    }
+  };
+
+  const visualizePath = () => {
+    for (let i = 0; i <= VisitedNodes.length; i++) {
+      if (i === VisitedNodes.length) {
         setTimeout(() => {
-            const node = shotestPathNodes[i]
-            document.getElementById(`node-${node.x}-${node.y}`).className = 
-            "node node-shortest-path";
-
-        }, 10*i)
-    }
-}
-
-const visualizePath = () => {
-
-
-    for(let i = 0; i <= VisitedNodes.length; i++){
-        
-        if(i === VisitedNodes.length){
-            setTimeout(() => {
-            visualizeShortesPath(Path)
-            }, 20*i)  
-        }
-        else{
-
-            setTimeout(() => {
-            const node = VisitedNodes[i]
-            document.getElementById(`node-${node.x}-${node.y}`).className = 
+          visualizeShortesPath(Path);
+        }, 20 * i);
+      } else {
+        setTimeout(() => {
+          const { x, y } = VisitedNodes[i];
+          document.getElementById(`node-${x}-${y}`).className =
             "node node-visited";
-            }, 20 * i)
-            
-        }
+        }, 20 * i);
+      }
     }
-}
+  };
 
+  //RENDERING PATHFIND COMPONENT
 
+  return (
+    <div>
+      <button onClick={visualizePath}>Visualize Path</button>
 
-//RENDERING PATHFIND COMPONENT
-
-    return (
-
-        <div>
-            <button onClick={visualizePath}>Visualize Path</button>
-            
-            <h1>PathFind Component!</h1>
-            {gridWithNode}
-        </div>
-    )
-
-}
+      <h1>PathFind Component!</h1>
+      {gridWithNode}
+    </div>
+  );
+};
 
 export default Pathfind;
