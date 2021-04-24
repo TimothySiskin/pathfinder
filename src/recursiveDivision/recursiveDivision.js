@@ -1,78 +1,153 @@
-function recursiveDivision(grid, startNode, endNode){
-
-let maze = []
-let walls = []
-
-//1. All grid is not walls => this is a orginal chamber
-
-gridIsWall(grid);
-createBox(maze);
-createChamber();
-
-//2. divide chamber in two / more walls with single passage in dandom spot
-//3. continue until each chamber has witdh of one
-
-
-
-
-    function gridIsWall(grid){
-        for(let cell of grid){
-            maze.push(cell)
+let walls;
+export default function recursiveDivisionMaze(grid, startNode, finishNode) {
+  if (!startNode || !finishNode || startNode === finishNode) {
+    return false;
+  }
+  let vertical = range(grid[0].length);
+  let horizontal = range(grid.length);
+  walls = [];
+  getRecursiveWalls(vertical, horizontal, grid, startNode, finishNode);
+  /******************************************************************* */
+  grid.forEach((cells) => {
+    cells.forEach((cell) => {
+      const { x, y } = cell;
+      walls.forEach((wall) => {
+        const [a, b] = wall;
+        if (x == a && y == b) {
+          cell.isWall = true;
         }
-
-        for(let cell of maze)
-        {
-            cell.isWall = false;
-        }
-    };
-
-
-    function createBox(maze)
-    {
-        //I must creata a "row of isWall = true" on (0, Y) axis, (X, 0) axis, (max X, Y), (X, max Y)
-        
-        for(let cell of maze)
-        {
-            
-            if((cell.y === 0))
-            {
-                cell.isWall = true
-            }
-            else if ((cell.x === 0))
-            {
-                cell.isWall = true
-            }
-            else if (cell.y === (maze.length - 1))
-            {
-                cell.isWall = true
-            }
-            else if (cell.x === (maze.length - 1))
-            {
-                cell.isWall = true
-            }
-            
-
-
-            // return (cell.y === 0) ? cell.isWall = true 
-            // : (cell.x === 0) ? cell.isWall = true
-            // : (cell.y === (maze.length - 1)) ? cell.isWall = true
-            // : (cell.x === (maze.length - 1)) ? cell.isWall = true
-            // : null
-
-        }
-
-        //Simplify logic with OR ( || )
-        
-    }
-        
-    function createChamber()
-    {
-        
-        //I must divide chamber into two seperate chambers, divided by wall with single opening cell
-        
-    }
-
-    return {maze, walls}
+      });
+    });
+  });
+  /******************************************************************* */
+  return walls;
 }
 
-export default recursiveDivision
+function range(len) {
+  let result = [];
+  for (let i = 0; i < len; i++) {
+    result.push(i);
+  }
+  return result;
+}
+
+//dir === 0 => Horizontal
+//dir === 1 => Vertical
+
+function getRecursiveWalls(vertical, horizontal, grid, startNode, finishNode) {
+  if (vertical.length < 2 || horizontal.length < 2) {
+    return;
+  }
+  let dir;
+  let num;
+  if (vertical.length > horizontal.length) {
+    dir = 0;
+    num = generateOddRandomNumber(vertical);
+  }
+  if (vertical.length <= horizontal.length) {
+    dir = 1;
+    num = generateOddRandomNumber(horizontal);
+  }
+
+  if (dir === 0) {
+    addWall(dir, num, vertical, horizontal, startNode, finishNode);
+    getRecursiveWalls(
+      vertical.slice(0, vertical.indexOf(num)),
+      horizontal,
+      grid,
+      startNode,
+      finishNode
+    );
+    getRecursiveWalls(
+      vertical.slice(vertical.indexOf(num) + 1),
+      horizontal,
+      grid,
+      startNode,
+      finishNode
+    );
+  } else {
+    addWall(dir, num, vertical, horizontal, startNode, finishNode);
+    getRecursiveWalls(
+      vertical,
+      horizontal.slice(0, horizontal.indexOf(num)),
+      grid,
+      startNode,
+      finishNode
+    );
+    getRecursiveWalls(
+      vertical,
+      horizontal.slice(horizontal.indexOf(num) + 1),
+      grid,
+      startNode,
+      finishNode
+    );
+  }
+}
+
+function generateOddRandomNumber(array) {
+  let max = array.length - 1;
+  let randomNum =
+    Math.floor(Math.random() * (max / 2)) +
+    Math.floor(Math.random() * (max / 2));
+  if (randomNum % 2 === 0) {
+    if (randomNum === max) {
+      randomNum -= 1;
+    } else {
+      randomNum += 1;
+    }
+  }
+  return array[randomNum];
+}
+
+//dir === 0 => Horizontal
+//dir === 1 => Vertical
+
+function addWall(dir, num, vertical, horizontal, startNode, finishNode) {
+  let isStartFinish = false;
+  let tempWalls = [];
+  if (dir === 0) {
+    if (horizontal.length === 2) return;
+    for (let temp of horizontal) {
+      if (
+        (temp === startNode.row && num === startNode.col) ||
+        (temp === finishNode.row && num === finishNode.col)
+      ) {
+        isStartFinish = true;
+        continue;
+      }
+      tempWalls.push([temp, num]);
+    }
+  } else {
+    if (vertical.length === 2) return;
+    for (let temp of vertical) {
+      if (
+        (num === startNode.row && temp === startNode.col) ||
+        (num === finishNode.row && temp === finishNode.col)
+      ) {
+        isStartFinish = true;
+        continue;
+      }
+      tempWalls.push([num, temp]);
+    }
+  }
+  if (!isStartFinish) {
+    tempWalls.splice(generateRandomNumber(tempWalls.length), 1);
+  }
+  for (let wall of tempWalls) {
+    walls.push(wall);
+  }
+}
+
+function generateRandomNumber(max) {
+  let randomNum =
+    Math.floor(Math.random() * (max / 2)) +
+    Math.floor(Math.random() * (max / 2));
+  if (randomNum % 2 !== 0) {
+    if (randomNum === max) {
+      randomNum -= 1;
+    } else {
+      randomNum += 1;
+    }
+  }
+  return randomNum;
+}
