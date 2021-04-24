@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Node from "./node";
 import Astar from "../aStarAlgorithm/aStar";
 import primsMaze from "../primsMazeAlgorithm/primsMaze";
+import Buttons from "./buttons";
 import "./pathfind.css";
 
 //DECLARING ROWS AND COLLUMNS FOR GRID
@@ -20,7 +21,8 @@ const Pathfind = () => {
   const [Path, setPath] = useState([]);
   const [VisitedNodes, setVisitedNodes] = useState([]);
   const [startAndEnd, setStartAndEnd] = useState({});
-  const [Maze, setMaze] = useState({});
+
+  const [Maze, setMaze] = useState({ type: "empty" });
 
   const isInitialMount = useRef(true);
 
@@ -32,11 +34,9 @@ const Pathfind = () => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
     } else {
-      console.log(startAndEnd);
-      mazeGen(primsMaze);
       pathFindAlg(Astar);
     }
-  }, [startAndEnd]);
+  }, [Maze]);
 
   //FUNCTION TO CREATE GRID
   const initializeGrid = () => {
@@ -67,8 +67,19 @@ const Pathfind = () => {
   }
 
   function mazeGen(func) {
-    let maze = func(Grid, startAndEnd.start, startAndEnd.end);
-    setMaze(maze);
+    if (func === "empty") {
+      Grid.forEach((cells) => {
+        cells.forEach((cell) => {
+          cell.isWall = false;
+        });
+      });
+    }
+    if (func === "primsMaze") {
+      primsMaze(Grid, startAndEnd.start, startAndEnd.end);
+    }
+    if (func === "recursive") {
+      console.log("recursive");
+    }
   }
 
   //CREATE THE SPOT
@@ -177,13 +188,14 @@ const Pathfind = () => {
   /********************************************************************** */
 
   const visualizeMaze = () => {
+    // toggle.current = true;
     animate();
 
     function animate() {
       let index = 0;
       for (let cells of Grid) {
         for (let cell of cells) {
-          if (!Maze.has(cell)) {
+          if (cell.isWall) {
             setTimeout(() => {
               const { x, y } = cell;
               document.getElementById(`node-${x}-${y}`).className += " isWall";
@@ -195,16 +207,41 @@ const Pathfind = () => {
     }
   };
 
+  //******************************************************************************************* */
+
+  function cleanVisualization() {
+    Grid.forEach((cells) => {
+      cells.forEach((cell) => {
+        const { x, y } = cell;
+        cell.isWall = false;
+
+        document.getElementById(`node-${x}-${y}`).className = "node";
+
+        if (cell.isStart) {
+          document.getElementById(`node-${x}-${y}`).className =
+            "node node-start";
+        }
+        if (cell.isEnd) {
+          document.getElementById(`node-${x}-${y}`).className = "node node-end";
+        }
+      });
+    });
+  }
+
   //RENDERING PATHFIND COMPONENT
 
   return (
     <div>
       <h1>PathFind Component!</h1>
 
-      <div>
-        <button onClick={visualizePath}>Visualize Path</button>
-        <button onClick={visualizeMaze}>Create Maze</button>
-      </div>
+      <Buttons
+        visualizeMaze={visualizeMaze}
+        visualizePath={visualizePath}
+        Maze={Maze}
+        setMaze={setMaze}
+        cleanVisualization={cleanVisualization}
+        mazeGen={mazeGen}
+      />
 
       <div>{gridWithNode}</div>
     </div>
