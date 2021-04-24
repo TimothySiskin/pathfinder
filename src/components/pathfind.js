@@ -4,11 +4,12 @@ import Astar from "../aStarAlgorithm/aStar";
 import primsMaze from "../primsMazeAlgorithm/primsMaze";
 import Buttons from "./buttons";
 import "./pathfind.css";
+import recursiveDivision from "../recursiveDivision/recursiveDivision";
 
 //DECLARING ROWS AND COLLUMNS FOR GRID
 
-const rows = 20;
-const cols = 30;
+const rows = 25;
+const cols = 41;
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
@@ -67,10 +68,14 @@ const Pathfind = () => {
   }
 
   function mazeGen(func) {
-    if (func === "empty") {
+    if (func === "random") {
       Grid.forEach((cells) => {
         cells.forEach((cell) => {
-          cell.isWall = false;
+          let random = Math.random();
+
+          if (random > 0.75) {
+            cell.isWall = true;
+          }
         });
       });
     }
@@ -78,10 +83,18 @@ const Pathfind = () => {
       primsMaze(Grid, startAndEnd.start, startAndEnd.end);
     }
     if (func === "recursive") {
-      console.log("recursive");
+      recursiveDivision(Grid, startAndEnd.start, startAndEnd.end);
     }
   }
 
+  function cleanMaze() {
+    Grid.forEach((cells) => {
+      cells.forEach((cell) => {
+        cell.isWall = false;
+      });
+    });
+    cleanVisualization();
+  }
   //CREATE THE SPOT
 
   const createSpot = (grid) => {
@@ -241,6 +254,7 @@ const Pathfind = () => {
         setMaze={setMaze}
         cleanVisualization={cleanVisualization}
         mazeGen={mazeGen}
+        cleanMaze={cleanMaze}
       />
 
       <div>{gridWithNode}</div>
