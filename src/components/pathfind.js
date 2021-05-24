@@ -244,8 +244,10 @@ const Pathfind = () => {
   //RENDERING PATHFIND COMPONENT
 
   return (
-    <div>
-      <h1>PathFind Component!</h1>
+    <div className="main-container">
+      <header>
+        <h1>PathFind App</h1>
+      </header>
 
       <Buttons
         visualizeMaze={visualizeMaze}
