@@ -1,6 +1,6 @@
 # Graph Algorithms Visualizer
 
-Graph Algorithms visualizer project which visualizes Different types of graph algorithms on a MxN Grid
+This project visualizes different types of graph algorithms on a MxN Grid using pure javascript and react components.
 
 ## Path-finding algorithms
 
